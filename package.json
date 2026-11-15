@@ -1,0 +1,16 @@
+{
+  "name": "cf-studio",
+  "version": "0.1.0",
+  "description": "Change how Codeforces looks. Themes, background, fonts. Stored only on your computer.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "package": "node scripts/package.js",
+    "test": "node --test tests/unit/**/*.test.js",
+    "generate-icons": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
+

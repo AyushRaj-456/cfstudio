@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "CF Studio",
+  "version": "0.1.0",
+  "description": "Change how Codeforces looks. Themes, background, fonts. Stored only on your computer.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://codeforces.com/*",
+    "https://*.codeforces.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "action": {
+    "default_title": "CF Studio",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://codeforces.com/*",
+        "https://*.codeforces.com/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}
+

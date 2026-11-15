@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CF Studio</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="cfs-app">
+    <!-- Header -->
+    <header class="cfs-header">
+      <div class="cfs-header-left">
+        <span class="cfs-brand-name">CF Studio</span>
+        <div class="cfs-status-indicator">
+          <span class="cfs-status-dot" id="status-dot"></span>
+          <span class="cfs-status-text" id="status-text">Initialising</span>
+          <button class="cfs-retry-btn" id="retry-btn" type="button" hidden>Try again</button>
+        </div>
+      </div>
+      <div class="cfs-header-right">
+        <label class="cfs-master-toggle" for="master-switch" title="Toggle CF Studio On / Off">
+          <input type="checkbox" id="master-switch" role="switch" aria-label="Toggle styling">
+          <span class="cfs-toggle-slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Error Banner -->
+    <div id="error-banner" class="cfs-error-banner" hidden>
+      Something went wrong. CF Studio turned itself off on this page.
+    </div>
+
+    <!-- Navigation Tabs: EXACTLY THREE MAIN TABS -->
+    <nav class="cfs-nav" role="tablist" aria-label="Sections">
+      <button class="cfs-nav-tab is-active" role="tab" aria-selected="true" data-tab="themes" id="tab-themes" aria-controls="panel-themes" tabindex="0">
+        Themes
+      </button>
+      <button class="cfs-nav-tab" role="tab" aria-selected="false" data-tab="backgrounds" id="tab-backgrounds" aria-controls="panel-backgrounds" tabindex="-1">
+        Backgrounds
+      </button>
+      <button class="cfs-nav-tab" role="tab" aria-selected="false" data-tab="fonts" id="tab-fonts" aria-controls="panel-fonts" tabindex="-1">
+        Fonts
+      </button>
+    </nav>
+
+    <!-- Main Scrollable Content Area -->
+    <main class="cfs-content-area">
+
+      <!-- ========================================================= -->
+      <!-- 1. THEMES PANEL -->
+      <!-- ========================================================= -->
+      <section class="cfs-panel is-active" id="panel-themes" role="tabpanel" aria-labelledby="tab-themes">
+
+        <!-- Filter Bar: [ Light ] [ Dark ] [ Impressive ] [ Custom Palette ] -->
+        <div class="cfs-theme-controls-bar">
+          <div class="cfs-filter-pills" id="theme-filter-pills">
+            <button class="cfs-filter-btn is-active" type="button" data-filter="light" id="filter-light">Light</button>
+            <button class="cfs-filter-btn" type="button" data-filter="dark" id="filter-dark">Dark</button>
+            <button class="cfs-filter-btn" type="button" data-filter="impressive" id="filter-impressive">Impressive</button>
+          </div>
+          <button class="cfs-btn-pill-action cfs-custom-palette-btn" id="btn-toggle-custom-palette" type="button" title="Open Custom Palette editor">
+            <svg class="cfs-pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10"/>
+            </svg>
+            <span>Custom Palette</span>
+          </button>
+        </div>
+
+        <!-- Custom Palette Editor (Compact, 3-Colour Palette Engine) -->
+        <div class="cfs-custom-theme-editor" id="custom-theme-editor" hidden>
+          <div class="cfs-custom-editor-header">
+            <div class="cfs-custom-editor-title-wrap">
+              <span class="cfs-custom-editor-title">Custom Palette</span>
+              <span class="cfs-custom-editor-subtitle">Choose 3 source colours to auto-generate your theme</span>
+            </div>
+            <button class="cfs-btn-icon" id="btn-close-custom-editor" type="button" title="Close editor">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <div class="cfs-custom-color-rows">
+            <!-- 1. Primary Colour -->
+            <div class="cfs-custom-color-row">
+              <div class="cfs-custom-color-label-wrap">
+                <span class="cfs-custom-color-name">Primary</span>
+                <span class="cfs-custom-color-desc">Identity, buttons, active nav</span>
+              </div>
+              <div class="cfs-custom-color-controls">
+                <label class="cfs-color-picker-wrap" title="Choose color">
+                  <input type="color" class="cfs-color-picker-native" id="custom-color-primary" value="#1a73e8">
+                  <span class="cfs-color-swatch-preview" id="custom-swatch-primary" style="background-color: #1a73e8;"></span>
+                </label>
+                <input type="text" class="cfs-hex-input" id="custom-hex-primary" value="#1a73e8" maxlength="7" spellcheck="false" placeholder="#1a73e8">
+              </div>
+            </div>
+
+            <!-- 2. Secondary Colour -->
+            <div class="cfs-custom-color-row">
+              <div class="cfs-custom-color-label-wrap">
+                <span class="cfs-custom-color-name">Secondary</span>
+                <span class="cfs-custom-color-desc">Surfaces, navbar, borders</span>
+              </div>
+              <div class="cfs-custom-color-controls">
+                <label class="cfs-color-picker-wrap" title="Choose color">
+                  <input type="color" class="cfs-color-picker-native" id="custom-color-secondary" value="#dbe4ee">
+                  <span class="cfs-color-swatch-preview" id="custom-swatch-secondary" style="background-color: #dbe4ee;"></span>
+                </label>
+                <input type="text" class="cfs-hex-input" id="custom-hex-secondary" value="#dbe4ee" maxlength="7" spellcheck="false" placeholder="#dbe4ee">
+              </div>
+            </div>
+
+            <!-- 3. Tertiary Colour -->
+            <div class="cfs-custom-color-row">
+              <div class="cfs-custom-color-label-wrap">
+                <span class="cfs-custom-color-name">Tertiary</span>
+                <span class="cfs-custom-color-desc">Links, accents, highlights</span>
+              </div>
+              <div class="cfs-custom-color-controls">
+                <label class="cfs-color-picker-wrap" title="Choose color">
+                  <input type="color" class="cfs-color-picker-native" id="custom-color-tertiary" value="#0d65d9">
+                  <span class="cfs-color-swatch-preview" id="custom-swatch-tertiary" style="background-color: #0d65d9;"></span>
+                </label>
+                <input type="text" class="cfs-hex-input" id="custom-hex-tertiary" value="#0d65d9" maxlength="7" spellcheck="false" placeholder="#0d65d9">
+              </div>
+            </div>
+          </div>
+
+          <div id="custom-theme-status-msg" class="cfs-feedback" hidden style="margin-bottom: 6px;"></div>
+
+          <div class="cfs-custom-editor-actions">
+            <button class="cfs-btn cfs-btn-primary" id="btn-apply-custom-theme" type="button" style="flex: 1;">Apply</button>
+            <button class="cfs-btn cfs-btn-secondary" id="btn-save-custom-theme" type="button">Save</button>
+            <button class="cfs-btn cfs-btn-ghost" id="btn-reset-custom-theme" type="button">Reset</button>
+          </div>
+        </div>
+
+        <!-- Three-Column Theme Gallery Grid (Compact Cards) -->
+        <div class="cfs-theme-grid" id="theme-grid">
+          <!-- Rendered dynamically by popup.js -->
+        </div>
+
+        <!-- Impressive Atmospheric Animations Toggle -->
+        <div class="cfs-impressive-options-bar" id="impressive-options-bar">
+          <label class="cfs-anim-toggle" for="toggle-impressive-animations" title="Enable or disable environmental animations">
+            <input type="checkbox" id="toggle-impressive-animations" checked>
+            <span class="cfs-toggle-slider-sm"></span>
+            <span class="cfs-anim-toggle-label">Atmospheric animations</span>
+          </label>
+        </div>
+
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 2. BACKGROUNDS PANEL -->
+      <!-- ========================================================= -->
+      <section class="cfs-panel" id="panel-backgrounds" role="tabpanel" aria-labelledby="tab-backgrounds">
+        <div class="cfs-subheading-row">
+          <div>
+            <h3 class="cfs-subheading">Background</h3>
+            <p class="cfs-subtext">Add custom artwork behind Codeforces surfaces</p>
+          </div>
+          <button class="cfs-btn-ghost-sm" id="btn-remove-bg" type="button">Reset</button>
+        </div>
+
+        <!-- Visual Background Cards Grid: ONLY None and Upload Image -->
+        <div class="cfs-bg-grid cfs-bg-grid-simple" id="bg-gallery-grid">
+          <!-- None Card -->
+          <div class="cfs-bg-card is-selected" data-mode="none" id="bg-card-none">
+            <div class="cfs-bg-thumb cfs-bg-none-thumb">
+              <span>None</span>
+            </div>
+            <div class="cfs-bg-card-title">None</div>
+          </div>
+
+          <!-- My Image Upload Card -->
+          <div class="cfs-bg-card cfs-bg-card-upload" id="bg-card-upload">
+            <div class="cfs-bg-thumb cfs-bg-upload-thumb" id="bg-upload-thumb">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="bg-upload-label">Upload Image</span>
+            </div>
+            <div class="cfs-bg-card-title" id="bg-image-card-title">Upload Image</div>
+          </div>
+        </div>
+
+        <input type="file" id="bg-file-input" accept="image/png, image/jpeg, image/webp" hidden>
+
+        <!-- Clipboard Paste & Colors from Image Actions -->
+        <div class="cfs-action-bar-row">
+          <button class="cfs-btn cfs-btn-secondary" id="btn-paste-bg" type="button" title="Paste image directly from clipboard">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Paste from Clipboard</span>
+          </button>
+          <button class="cfs-btn cfs-btn-secondary" id="btn-colors-from-img" type="button" title="Extract matching light palette from image">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10"/></svg>
+            <span>Colors from Image</span>
+          </button>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- COLLAPSIBLE SECTION A: SURFACE TREATMENT -->
+        <!-- ========================================================= -->
+        <div class="cfs-accordion-section" id="section-surface-treatment" style="margin-top: 10px;">
+          <button class="cfs-accordion-header" id="header-surface-treatment" type="button" aria-expanded="false" aria-controls="content-surface-treatment">
+            <span class="cfs-accordion-title">Surface Treatment</span>
+            <svg class="cfs-accordion-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="cfs-accordion-content" id="content-surface-treatment" hidden>
+            <div class="cfs-accordion-inner">
+              <!-- Surface Treatment Selection: Solid, Translucent, Frosted -->
+              <div class="cfs-treatment-pills" id="surface-treatment-pills">
+                <button class="cfs-treatment-pill" type="button" data-treatment="solid" id="btn-treatment-solid">Solid</button>
+                <button class="cfs-treatment-pill" type="button" data-treatment="translucent" id="btn-treatment-translucent">Translucent</button>
+                <button class="cfs-treatment-pill is-active" type="button" data-treatment="frosted" id="btn-treatment-frosted">Frosted</button>
+              </div>
+
+              <!-- Global Block Transparency Slider -->
+              <div class="cfs-slider-row" style="margin-top: 10px;">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Block Transparency</span>
+                  <span class="cfs-slider-value" id="val-block-transparency">20%</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-block-transparency" min="0" max="100" value="20" title="Adjust transparency of all surfaces together (0-100%)">
+              </div>
+
+              <!-- Frosted Glass Blur (active for Frosted treatment) -->
+              <div class="cfs-slider-row" id="row-frosted-blur" style="margin-top: 8px;">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Frosted Blur</span>
+                  <span class="cfs-slider-value" id="val-frosted-blur">10px</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-frosted-blur" min="0" max="25" value="10" title="Adjust frosted blur intensity (0-25px)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- COLLAPSIBLE SECTION B: IMAGE ADJUSTMENTS -->
+        <!-- ========================================================= -->
+        <div class="cfs-accordion-section" id="section-image-adjustments" style="margin-top: 8px;">
+          <button class="cfs-accordion-header" id="header-image-adjustments" type="button" aria-expanded="false" aria-controls="content-image-adjustments">
+            <span class="cfs-accordion-title">Image Adjustments</span>
+            <svg class="cfs-accordion-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="cfs-accordion-content" id="content-image-adjustments" hidden>
+            <div class="cfs-accordion-inner">
+              <div class="cfs-field-grid-2">
+                <div class="cfs-field-group">
+                  <label class="cfs-field-label" for="bg-position-select">Position</label>
+                  <select class="cfs-select" id="bg-position-select">
+                    <option value="center">Center</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+                <div class="cfs-field-group">
+                  <label class="cfs-field-label" for="bg-size-select">Size</label>
+                  <select class="cfs-select" id="bg-size-select">
+                    <option value="cover">Cover</option>
+                    <option value="contain">Contain</option>
+                    <option value="repeat">Repeat / Tile</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Sliders -->
+              <div class="cfs-slider-row">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Opacity / Strength</span>
+                  <span class="cfs-slider-value" id="val-bg-strength">100%</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-bg-strength" min="0" max="100" value="100">
+              </div>
+
+              <div class="cfs-slider-row">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Blur</span>
+                  <span class="cfs-slider-value" id="val-bg-blur">0px</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-bg-blur" min="0" max="20" value="0">
+              </div>
+
+              <div class="cfs-slider-row">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Brightness</span>
+                  <span class="cfs-slider-value" id="val-bg-brightness">100%</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-bg-brightness" min="50" max="150" value="100">
+              </div>
+
+              <div class="cfs-slider-row">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Contrast</span>
+                  <span class="cfs-slider-value" id="val-bg-contrast">100%</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-bg-contrast" min="50" max="150" value="100">
+              </div>
+
+              <div class="cfs-slider-row">
+                <div class="cfs-slider-header">
+                  <span class="cfs-slider-label">Saturation</span>
+                  <span class="cfs-slider-value" id="val-bg-saturation">100%</span>
+                </div>
+                <input type="range" class="cfs-range" id="slider-bg-saturation" min="0" max="200" value="100">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- 3. FONTS PANEL — EXTREMELY SIMPLE -->
+      <!-- ========================================================= -->
+      <section class="cfs-panel" id="panel-fonts" role="tabpanel" aria-labelledby="tab-fonts">
+        <div class="cfs-subheading-row">
+          <div>
+            <h3 class="cfs-subheading">Fonts</h3>
+            <p class="cfs-subtext">Apply any Google Font or local family name across Codeforces</p>
+          </div>
+        </div>
+
+        <div class="cfs-field-group" style="margin-top: 14px;">
+          <label class="cfs-field-label" for="font-family-input">Custom Font Name</label>
+          <input type="text" class="cfs-input" id="font-family-input" placeholder="Enter Google Fonts family name, e.g. Inter, Roboto, Poppins" maxlength="100">
+          <span class="cfs-hint">Enter any Google Font family name (e.g. Inter, Roboto, Poppins) or local font.</span>
+        </div>
+
+        <div id="font-status-msg" class="cfs-feedback" hidden></div>
+
+        <div class="cfs-font-action-bar" style="margin-top: 14px; display: flex; gap: 8px;">
+          <button class="cfs-btn cfs-btn-primary" id="btn-apply-font" type="button" style="flex: 1;">Apply</button>
+          <button class="cfs-btn cfs-btn-ghost" id="btn-reset-font" type="button">Reset</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer Bar: Quick Backup & Utilities -->
+    <footer class="cfs-footer">
+      <div class="cfs-footer-actions">
+        <button class="cfs-footer-btn" id="export-btn" type="button" title="Download backup JSON">Export</button>
+        <button class="cfs-footer-btn" id="import-btn" type="button" title="Import backup JSON">Import</button>
+        <input type="file" id="import-file-input" accept=".json" hidden>
+        <button class="cfs-footer-btn cfs-footer-btn-danger" id="global-reset-btn" type="button" title="Reset all settings">Reset</button>
+      </div>
+      <span class="cfs-footer-ver">CF Studio v1.0.0</span>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Confirm Reset Modal -->
+    <div class="cfs-modal" id="confirm-reset-dialog" hidden>
+      <div class="cfs-modal-content">
+        <h3 class="cfs-modal-title">Reset all settings?</h3>
+        <p class="cfs-modal-desc">This will restore all default light themes, background, block transparency, and fonts.</p>
+        <div class="cfs-modal-actions">
+          <button class="cfs-btn cfs-btn-ghost" id="confirm-reset-cancel" type="button">Cancel</button>
+          <button class="cfs-btn cfs-btn-danger" id="confirm-reset-confirm" type="button">Reset</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
